@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Should Nav Eat?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            color: #fff;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            color: #525252;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 50px;
+        }
+
+        .heart {
+            color: #e11d48;
+            display: inline-block;
+        }
+
+        /* Constraints Section */
+        .constraints-section {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 32px;
+            width: 100%;
+            max-width: 360px;
+        }
+
+        .constraints-title {
+            font-size: 0.7rem;
+            color: #666;
+            margin-bottom: 28px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .constraint-row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .constraint-row label {
+            font-size: 0.8rem;
+            color: #888;
+            font-weight: 400;
+        }
+
+        .constraint-row input[type="number"],
+        .constraint-row select {
+            padding: 14px 16px;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: #fff;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .constraint-row input::placeholder {
+            color: #444;
+        }
+
+        .constraint-row select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+
+        .constraint-row select option {
+            background: #111;
+            color: #fff;
+        }
+
+        .constraint-row input:focus,
+        .constraint-row select:focus {
+            outline: none;
+            border-color: #fff;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 0;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        .checkbox-row:first-of-type {
+            margin-top: 8px;
+        }
+
+        .checkbox-row input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #fff;
+            cursor: pointer;
+        }
+
+        .checkbox-row label {
+            font-size: 0.85rem;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .start-btn {
+            width: 100%;
+            padding: 16px;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 24px;
+        }
+
+        .start-btn:hover {
+            background: #e5e5e5;
+        }
+
+        /* Card Stack */
+        .card-container {
+            position: relative;
+            width: 320px;
+            height: 480px;
+            display: none;
+        }
+
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            user-select: none;
+            transition: transform 0.1s ease-out;
+        }
+
+        .card:active {
+            cursor: grabbing;
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            border: 1px solid #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 28px;
+        }
+
+        .card-icon svg {
+            width: 36px;
+            height: 36px;
+            stroke: #fff;
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .card-name {
+            font-size: 1.6rem;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            margin-bottom: 8px;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .card-description {
+            font-size: 0.8rem;
+            color: #555;
+            margin-bottom: 12px;
+            text-align: center;
+            padding: 0 24px;
+        }
+
+        .card-price {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+        .card-tag {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .card-tag.warning {
+            background: #1a1a1a;
+            color: #666;
+            border: 1px solid #333;
+        }
+
+        .card-tag.good {
+            background: #1a1a1a;
+            color: #888;
+            border: 1px solid #333;
+        }
+
+        .card-tag.deal {
+            background: #1c1917;
+            color: #a8a29e;
+            border: 1px solid #44403c;
+        }
+
+        .card-overlay {
+            position: absolute;
+            top: 24px;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+
+        .card-overlay.yes {
+            right: 24px;
+            background: #fff;
+            color: #000;
+        }
+
+        .card-overlay.no {
+            left: 24px;
+            background: transparent;
+            color: #fff;
+            border: 1px solid #444;
+        }
+
+        .card-overlay.maybe {
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+        }
+
+        /* Swipe Buttons */
+        .swipe-buttons {
+            display: none;
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .swipe-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 1px solid #333;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .swipe-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: #666;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .swipe-btn:hover {
+            border-color: #fff;
+        }
+
+        .swipe-btn:hover svg {
+            stroke: #fff;
+        }
+
+        .swipe-btn.yes:hover {
+            background: #fff;
+        }
+
+        .swipe-btn.yes:hover svg {
+            stroke: #000;
+        }
+
+        .swipe-hint {
+            color: #333;
+            font-size: 0.7rem;
+            margin-top: 24px;
+            text-align: center;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            display: none;
+        }
+
+        /* Results */
+        .results {
+            display: none;
+            text-align: center;
+            max-width: 360px;
+            width: 100%;
+        }
+
+        .results-title {
+            font-size: 0.7rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 40px;
+        }
+
+        .winner-card {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 20px;
+            padding: 40px 32px;
+            margin-bottom: 24px;
+        }
+
+        .winner-icon {
+            width: 64px;
+            height: 64px;
+            border: 1px solid #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .winner-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: #fff;
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .winner-name {
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            margin-bottom: 8px;
+        }
+
+        .winner-description {
+            font-size: 0.8rem;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        .winner-reason {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 16px;
+        }
+
+        .budget-remaining {
+            font-size: 0.75rem;
+            color: #444;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #222;
+        }
+
+        .maybes-section {
+            text-align: left;
+            margin-top: 32px;
+            padding: 24px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+        }
+
+        .maybes-title {
+            font-size: 0.65rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 16px;
+        }
+
+        .maybe-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #1a1a1a;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .maybe-item:last-child {
+            border-bottom: none;
+        }
+
+        .maybe-price {
+            color: #444;
+            font-size: 0.85rem;
+        }
+
+        .restart-btn {
+            width: 100%;
+            padding: 16px;
+            background: transparent;
+            color: #666;
+            border: 1px solid #333;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: all 0.2s;
+        }
+
+        .restart-btn:hover {
+            border-color: #fff;
+            color: #fff;
+        }
+
+        .no-winner {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 40px 32px;
+            margin-bottom: 24px;
+        }
+
+        .no-winner p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .save-message {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .save-message-title {
+            font-size: 0.65rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 12px;
+        }
+
+        .save-message p {
+            color: #888;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        /* Progress dots */
+        .progress {
+            display: none;
+            gap: 6px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 200px;
+        }
+
+        .progress-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #333;
+            transition: all 0.3s;
+        }
+
+        .progress-dot.active {
+            background: #fff;
+            transform: scale(1.2);
+        }
+
+        .progress-dot.yes {
+            background: #fff;
+        }
+
+        .progress-dot.no {
+            background: #333;
+        }
+
+        .progress-dot.maybe {
+            background: #666;
+        }
+
+        /* Counter */
+        .card-counter {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.7rem;
+            color: #444;
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+<body>
+    <h1>What Should Nav Eat?</h1>
+    <p class="subtitle">Made with <span class="heart">&#9829;</span> by Michelle</p>
+
+    <!-- Constraints Setup -->
+    <div class="constraints-section" id="constraints">
+        <div class="constraints-title">Quick Setup</div>
+        
+        <div class="constraint-row">
+            <label>Budget for food</label>
+            <input type="number" id="budget" placeholder="Enter amount" min="0" step="1">
+        </div>
+
+        <div class="constraint-row">
+            <label>Last time you bought food</label>
+            <select id="lastBought">
+                <option value="">Select one</option>
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="2-3days">2-3 days ago</option>
+                <option value="week">About a week ago</option>
+                <option value="longer">Longer than a week</option>
+            </select>
+        </div>
+
+        <div class="checkbox-row">
+            <input type="checkbox" id="shouldSave">
+            <label for="shouldSave">I should be saving money</label>
+        </div>
+
+        <div class="checkbox-row">
+            <input type="checkbox" id="veryHungry">
+            <label for="veryHungry">I'm really hungry</label>
+        </div>
+
+        <div class="checkbox-row">
+            <input type="checkbox" id="includeDeals">
+            <label for="includeDeals">Show me combo deals</label>
+        </div>
+
+        <button class="start-btn" onclick="startGame()">Start</button>
+    </div>
+
+    <!-- Progress Dots -->
+    <div class="progress" id="progress"></div>
+
+    <!-- Card Stack -->
+    <div class="card-container" id="cardContainer"></div>
+
+    <!-- Swipe Buttons -->
+    <div class="swipe-buttons" id="swipeButtons">
+        <button class="swipe-btn no" onclick="swipe('no')">
+            <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <button class="swipe-btn maybe" onclick="swipe('maybe')">
+            <svg viewBox="0 0 24 24"><path d="M12 19v-2m0-10V5m0 2a5 5 0 110 10 5 5 0 010-10z"/></svg>
+        </button>
+        <button class="swipe-btn yes" onclick="swipe('yes')">
+            <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+        </button>
+    </div>
+
+    <p class="swipe-hint" id="swipeHint">Swipe or tap to decide</p>
+
+    <!-- Results -->
+    <div class="results" id="results"></div>
+
+    <script>
+        const baseFoods = [
+            { 
+                name: "Chicken", 
+                icon: `<svg viewBox="0 0 24 24"><path d="M12 2C8 2 4 6 4 10c0 2.5 1.5 4.5 3 6l1 6h8l1-6c1.5-1.5 3-3.5 3-6 0-4-4-8-8-8z"/><path d="M9 22h6"/></svg>`,
+                price: 16,
+                filling: 4,
+                isDeal: false
+            },
+            { 
+                name: "Wings (20pc)", 
+                description: "Cheaper, smaller portions",
+                icon: `<svg viewBox="0 0 24 24"><path d="M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5l6.74-6.76z"/><path d="M16 8L2 22"/><path d="M17.5 15H9"/></svg>`,
+                price: 15,
+                filling: 3,
+                isDeal: false
+            },
+            { 
+                name: "KFC Wings (10pc)", 
+                description: "Pricier but better tasting",
+                icon: `<svg viewBox="0 0 24 24"><path d="M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5l6.74-6.76z"/><path d="M16 8L2 22"/><path d="M17.5 15H9"/></svg>`,
+                price: 22,
+                filling: 3,
+                isDeal: false
+            },
+            { 
+                name: "Burger", 
+                description: "Classic whopper style",
+                icon: `<svg viewBox="0 0 24 24"><path d="M4 15h16a2 2 0 002-2 2 2 0 00-2-2H4a2 2 0 00-2 2 2 2 0 002 2z"/><path d="M4 11c0-4 4-6 8-6s8 2 8 6"/><path d="M4 15c0 2 2 4 8 4s8-2 8-4"/></svg>`,
+                price: 12,
+                filling: 5,
+                isDeal: false
+            },
+            { 
+                name: "Beef Burger", 
+                description: "Premium beef patty",
+                icon: `<svg viewBox="0 0 24 24"><path d="M4 15h16a2 2 0 002-2 2 2 0 00-2-2H4a2 2 0 00-2 2 2 2 0 002 2z"/><path d="M4 11c0-4 4-6 8-6s8 2 8 6"/><path d="M4 15c0 2 2 4 8 4s8-2 8-4"/><path d="M6 13h12"/></svg>`,
+                price: 15,
+                filling: 5,
+                isDeal: false
+            },
+            { 
+                name: "Fries", 
+                icon: `<svg viewBox="0 0 24 24"><rect x="6" y="8" width="12" height="14" rx="1"/><path d="M8 8V5"/><path d="M12 8V4"/><path d="M16 8V5"/><path d="M10 8V6"/><path d="M14 8V6"/></svg>`,
+                price: 5,
+                filling: 2,
+                isDeal: false
+            },
+            { 
+                name: "Sushi", 
+                description: "Sushi train plates",
+                icon: `<svg viewBox="0 0 24 24"><ellipse cx="12" cy="14" rx="8" ry="4"/><path d="M4 14v-2c0-2.2 3.6-4 8-4s8 1.8 8 4v2"/><circle cx="9" cy="13" r="1.5"/><circle cx="15" cy="13" r="1.5"/></svg>`,
+                price: 18,
+                filling: 3,
+                isDeal: false
+            },
+            { 
+                name: "Rice Bowl", 
+                icon: `<svg viewBox="0 0 24 24"><path d="M4 12h16"/><path d="M4 12c0 4 3.6 7 8 7s8-3 8-7"/><path d="M6 12c0-2 2.7-4 6-4s6 2 6 4"/><path d="M8 9c0-1 1.8-2 4-2s4 1 4 2"/></svg>`,
+                price: 16,
+                filling: 5,
+                isDeal: false
+            },
+            { 
+                name: "Pizza Slice", 
+                icon: `<svg viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2z"/><circle cx="10" cy="14" r="1.5"/><circle cx="14" cy="16" r="1.5"/><circle cx="12" cy="10" r="1"/></svg>`,
+                price: 6,
+                filling: 2,
+                isDeal: false
+            },
+            { 
+                name: "Chicken Burger", 
+                description: "Crispy chicken fillet",
+                icon: `<svg viewBox="0 0 24 24"><path d="M4 15h16a2 2 0 002-2 2 2 0 00-2-2H4a2 2 0 00-2 2 2 2 0 002 2z"/><path d="M4 11c0-4 4-6 8-6s8 2 8 6"/><path d="M4 15c0 2 2 4 8 4s8-2 8-4"/><path d="M7 13h10"/></svg>`,
+                price: 10,
+                filling: 4,
+                isDeal: false
+            }
+        ];
+
+        const dealFoods = [
+            { 
+                name: "20 Wing Deal", 
+                description: "Special discount on wings",
+                icon: `<svg viewBox="0 0 24 24"><path d="M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5l6.74-6.76z"/><path d="M16 8L2 22"/><path d="M17.5 15H9"/></svg>`,
+                price: 22,
+                filling: 3,
+                isDeal: true,
+                dealType: "special"
+            },
+            { 
+                name: "Family Chicken Box", 
+                description: "Large portion, great value",
+                icon: `<svg viewBox="0 0 24 24"><path d="M12 2C8 2 4 6 4 10c0 2.5 1.5 4.5 3 6l1 6h8l1-6c1.5-1.5 3-3.5 3-6 0-4-4-8-8-8z"/><path d="M9 22h6"/></svg>`,
+                price: 25,
+                filling: 5,
+                isDeal: true,
+                dealType: "value"
+            },
+            { 
+                name: "Sushi Combo", 
+                description: "Roll + miso + salad",
+                icon: `<svg viewBox="0 0 24 24"><ellipse cx="12" cy="14" rx="8" ry="4"/><path d="M4 14v-2c0-2.2 3.6-4 8-4s8 1.8 8 4v2"/><circle cx="9" cy="13" r="1.5"/><circle cx="15" cy="13" r="1.5"/></svg>`,
+                price: 24,
+                filling: 4,
+                isDeal: true,
+                dealType: "combo"
+            },
+            { 
+                name: "Rice Bowl Combo", 
+                description: "Bowl + drink + side",
+                icon: `<svg viewBox="0 0 24 24"><path d="M4 12h16"/><path d="M4 12c0 4 3.6 7 8 7s8-3 8-7"/><path d="M6 12c0-2 2.7-4 6-4s6 2 6 4"/><path d="M8 9c0-1 1.8-2 4-2s4 1 4 2"/></svg>`,
+                price: 19,
+                filling: 5,
+                isDeal: true,
+                dealType: "combo"
+            }
+        ];
+
+        let currentIndex = 0;
+        let results = { yes: [], no: [], maybe: [] };
+        let constraints = {};
+        let shuffledFoods = [];
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function startGame() {
+            constraints = {
+                budget: parseFloat(document.getElementById('budget').value) || Infinity,
+                lastBought: document.getElementById('lastBought').value,
+                shouldSave: document.getElementById('shouldSave').checked,
+                veryHungry: document.getElementById('veryHungry').checked,
+                includeDeals: document.getElementById('includeDeals').checked
+            };
+
+            currentIndex = 0;
+            results = { yes: [], no: [], maybe: [] };
+            
+            // Combine foods based on deal preference
+            let foodsToUse = [...baseFoods];
+            if (constraints.includeDeals) {
+                foodsToUse = [...baseFoods, ...dealFoods];
+            }
+            shuffledFoods = shuffleArray(foodsToUse);
+
+            document.getElementById('constraints').style.display = 'none';
+            document.getElementById('cardContainer').style.display = 'block';
+            document.getElementById('swipeButtons').style.display = 'flex';
+            document.getElementById('swipeHint').style.display = 'block';
+            document.getElementById('progress').style.display = 'flex';
+
+            const progress = document.getElementById('progress');
+            progress.innerHTML = shuffledFoods.map((_, i) => 
+                `<div class="progress-dot ${i === 0 ? 'active' : ''}" id="dot-${i}"></div>`
+            ).join('');
+
+            renderCard();
+        }
+
+        function renderCard() {
+            if (currentIndex >= shuffledFoods.length) {
+                showResults();
+                return;
+            }
+
+            const food = shuffledFoods[currentIndex];
+            const container = document.getElementById('cardContainer');
+            const overBudget = food.price > constraints.budget;
+            
+            let tags = [];
+            if (overBudget) {
+                tags.push('<span class="card-tag warning">Over budget</span>');
+            }
+            if (food.filling >= 4 && !overBudget) {
+                tags.push('<span class="card-tag good">Very filling</span>');
+            }
+            if (food.isDeal) {
+                tags.push('<span class="card-tag deal">Deal</span>');
+            }
+            
+            container.innerHTML = `
+                <div class="card" id="currentCard">
+                    <div class="card-overlay yes">Yes</div>
+                    <div class="card-overlay no">No</div>
+                    <div class="card-overlay maybe">Maybe</div>
+                    <div class="card-icon">${food.icon}</div>
+                    <div class="card-name">${food.name}</div>
+                    ${food.description ? `<div class="card-description">${food.description}</div>` : ''}
+                    <div class="card-price">$${food.price}</div>
+                    ${tags.length > 0 ? `<div class="card-tags">${tags.join('')}</div>` : ''}
+                    <div class="card-counter">${currentIndex + 1} / ${shuffledFoods.length}</div>
+                </div>
+            `;
+
+            const card = document.getElementById('currentCard');
+            let startX, startY, currentX, currentY;
+            let isDragging = false;
+
+            card.addEventListener('mousedown', dragStart);
+            card.addEventListener('touchstart', dragStart);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('touchmove', drag);
+            document.addEventListener('mouseup', dragEnd);
+            document.addEventListener('touchend', dragEnd);
+
+            function dragStart(e) {
+                isDragging = true;
+                startX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+                startY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
+                card.style.transition = 'none';
+            }
+
+            function drag(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                
+                currentX = (e.type === 'mousemove' ? e.clientX : e.touches[0].clientX) - startX;
+                currentY = (e.type === 'mousemove' ? e.clientY : e.touches[0].clientY) - startY;
+                
+                const rotate = currentX * 0.08;
+                card.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotate}deg)`;
+
+                const yesOverlay = card.querySelector('.card-overlay.yes');
+                const noOverlay = card.querySelector('.card-overlay.no');
+                const maybeOverlay = card.querySelector('.card-overlay.maybe');
+
+                if (currentX > 50) {
+                    yesOverlay.style.opacity = Math.min((currentX - 50) / 100, 1);
+                    noOverlay.style.opacity = 0;
+                    maybeOverlay.style.opacity = 0;
+                } else if (currentX < -50) {
+                    noOverlay.style.opacity = Math.min((-currentX - 50) / 100, 1);
+                    yesOverlay.style.opacity = 0;
+                    maybeOverlay.style.opacity = 0;
+                } else if (currentY < -50) {
+                    maybeOverlay.style.opacity = Math.min((-currentY - 50) / 100, 1);
+                    yesOverlay.style.opacity = 0;
+                    noOverlay.style.opacity = 0;
+                } else {
+                    yesOverlay.style.opacity = 0;
+                    noOverlay.style.opacity = 0;
+                    maybeOverlay.style.opacity = 0;
+                }
+            }
+
+            function dragEnd() {
+                if (!isDragging) return;
+                isDragging = false;
+
+                card.style.transition = 'transform 0.3s ease';
+
+                if (currentX > 100) {
+                    swipe('yes');
+                } else if (currentX < -100) {
+                    swipe('no');
+                } else if (currentY < -100) {
+                    swipe('maybe');
+                } else {
+                    card.style.transform = '';
+                    const overlays = card.querySelectorAll('.card-overlay');
+                    overlays.forEach(o => o.style.opacity = 0);
+                }
+            }
+        }
+
+        function swipe(direction) {
+            const card = document.getElementById('currentCard');
+            const food = shuffledFoods[currentIndex];
+
+            if (direction === 'yes') {
+                card.style.transform = 'translateX(500px) rotate(20deg)';
+            } else if (direction === 'no') {
+                card.style.transform = 'translateX(-500px) rotate(-20deg)';
+            } else {
+                card.style.transform = 'translateY(-500px)';
+            }
+            card.style.opacity = '0';
+            card.style.transition = 'all 0.3s ease';
+
+            results[direction].push(food);
+
+            const dot = document.getElementById(`dot-${currentIndex}`);
+            dot.classList.remove('active');
+            dot.classList.add(direction);
+
+            currentIndex++;
+
+            if (currentIndex < shuffledFoods.length) {
+                document.getElementById(`dot-${currentIndex}`).classList.add('active');
+            }
+
+            setTimeout(renderCard, 300);
+        }
+
+        function showResults() {
+            document.getElementById('cardContainer').style.display = 'none';
+            document.getElementById('swipeButtons').style.display = 'none';
+            document.getElementById('swipeHint').style.display = 'none';
+            document.getElementById('progress').style.display = 'none';
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.style.display = 'block';
+
+            let html = '';
+
+            const validYes = results.yes.filter(f => f.price <= constraints.budget);
+            const validMaybe = results.maybe.filter(f => f.price <= constraints.budget);
+
+            if (constraints.shouldSave && !constraints.veryHungry) {
+                const suggestion = validYes[0] || validMaybe[0] || baseFoods.find(f => f.name === 'Fries');
+                html = `
+                    <div class="results-title">Result</div>
+                    <div class="save-message">
+                        <div class="save-message-title">A gentle reminder</div>
+                        <p>You mentioned wanting to save. Maybe check what's already at home first?</p>
+                        <p style="margin-top: 12px;">If you do decide to eat out, <strong>${suggestion.name}</strong> would be the most budget-friendly choice.</p>
+                    </div>
+                    <button class="restart-btn" onclick="restart()">Start Over</button>
+                `;
+            } else if (validYes.length > 0) {
+                // Prioritize: very hungry -> filling, deals if enabled, then first choice
+                let winner;
+                if (constraints.veryHungry) {
+                    winner = validYes.reduce((a, b) => a.filling > b.filling ? a : b);
+                } else {
+                    winner = validYes[0];
+                }
+                
+                let reason = '';
+                if (constraints.veryHungry && winner.filling >= 4) {
+                    reason = "This will fill you up";
+                } else if (winner.isDeal) {
+                    reason = "Great value for your money";
+                } else if (winner.price <= 10) {
+                    reason = "Easy on the wallet";
+                } else {
+                    reason = "You're feeling this today";
+                }
+
+                html = `
+                    <div class="results-title">Decision Made</div>
+                    
+                    <div class="winner-card">
+                        <div class="winner-icon">${winner.icon}</div>
+                        <div class="winner-name">${winner.name}</div>
+                        ${winner.description ? `<div class="winner-description">${winner.description}</div>` : ''}
+                        <div class="winner-reason">${reason}</div>
+                        ${constraints.budget < Infinity ? `<div class="budget-remaining">$${(constraints.budget - winner.price).toFixed(0)} remaining after</div>` : ''}
+                    </div>
+
+                    ${validMaybe.length > 0 ? `
+                        <div class="maybes-section">
+                            <div class="maybes-title">Backup Options</div>
+                            ${validMaybe.slice(0, 4).map(f => `
+                                <div class="maybe-item">
+                                    <span>${f.name}</span>
+                                    <span class="maybe-price">$${f.price}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+
+                    <button class="restart-btn" onclick="restart()">Start Over</button>
+                `;
+            } else if (validMaybe.length > 0) {
+                const topMaybe = validMaybe[0];
+                html = `
+                    <div class="results-title">Feeling Indecisive</div>
+                    
+                    <div class="winner-card">
+                        <div class="winner-icon">${topMaybe.icon}</div>
+                        <div class="winner-name">${topMaybe.name}</div>
+                        ${topMaybe.description ? `<div class="winner-description">${topMaybe.description}</div>` : ''}
+                        <div class="winner-reason">Your best "maybe"</div>
+                    </div>
+
+                    <button class="restart-btn" onclick="restart()">Try Again</button>
+                `;
+            } else {
+                html = `
+                    <div class="results-title">Result</div>
+                    
+                    <div class="no-winner">
+                        <p>You passed on everything${constraints.budget < Infinity ? ' or they exceeded your budget' : ''}.</p>
+                        <p style="margin-top: 12px;">Maybe you're not actually that hungry right now.</p>
+                    </div>
+
+                    ${constraints.shouldSave ? `
+                        <div class="save-message">
+                            <div class="save-message-title">Silver lining</div>
+                            <p>Good opportunity to save that money for something else.</p>
+                        </div>
+                    ` : ''}
+
+                    <button class="restart-btn" onclick="restart()">Try Again</button>
+                `;
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        function restart() {
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('constraints').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
