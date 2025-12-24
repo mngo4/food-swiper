@@ -621,6 +621,7 @@
         const baseFoods = [
             { 
                 name: "Chicken", 
+                description: "Protein! You can't complain about this one",
                 icon: `<svg viewBox="0 0 24 24"><path d="M12 2C8 2 4 6 4 10c0 2.5 1.5 4.5 3 6l1 6h8l1-6c1.5-1.5 3-3.5 3-6 0-4-4-8-8-8z"/><path d="M9 22h6"/></svg>`,
                 price: 16,
                 filling: 4,
@@ -628,7 +629,7 @@
             },
             { 
                 name: "Wings (20pc)", 
-                description: "Cheaper, smaller portions",
+                description: "Your comfort pick, I know you too well",
                 icon: `<svg viewBox="0 0 24 24"><path d="M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5l6.74-6.76z"/><path d="M16 8L2 22"/><path d="M17.5 15H9"/></svg>`,
                 price: 15,
                 filling: 3,
@@ -636,18 +637,10 @@
             },
             { 
                 name: "KFC Wings (10pc)", 
-                description: "Pricier but better tasting",
+                description: "The better tasting wings when you wanna splurge",
                 icon: `<svg viewBox="0 0 24 24"><path d="M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5l6.74-6.76z"/><path d="M16 8L2 22"/><path d="M17.5 15H9"/></svg>`,
                 price: 22,
                 filling: 3,
-                isDeal: false
-            },
-            { 
-                name: "Burger", 
-                description: "Classic whopper style",
-                icon: `<svg viewBox="0 0 24 24"><path d="M4 15h16a2 2 0 002-2 2 2 0 00-2-2H4a2 2 0 00-2 2 2 2 0 002 2z"/><path d="M4 11c0-4 4-6 8-6s8 2 8 6"/><path d="M4 15c0 2 2 4 8 4s8-2 8-4"/></svg>`,
-                price: 12,
-                filling: 5,
                 isDeal: false
             },
             { 
@@ -660,6 +653,7 @@
             },
             { 
                 name: "Fries", 
+                description: "Fries before Michelle",
                 icon: `<svg viewBox="0 0 24 24"><rect x="6" y="8" width="12" height="14" rx="1"/><path d="M8 8V5"/><path d="M12 8V4"/><path d="M16 8V5"/><path d="M10 8V6"/><path d="M14 8V6"/></svg>`,
                 price: 5,
                 filling: 2,
@@ -667,7 +661,7 @@
             },
             { 
                 name: "Sushi", 
-                description: "Sushi train plates",
+                description: "When you're feeling fancy",
                 icon: `<svg viewBox="0 0 24 24"><ellipse cx="12" cy="14" rx="8" ry="4"/><path d="M4 14v-2c0-2.2 3.6-4 8-4s8 1.8 8 4v2"/><circle cx="9" cy="13" r="1.5"/><circle cx="15" cy="13" r="1.5"/></svg>`,
                 price: 18,
                 filling: 3,
@@ -675,6 +669,7 @@
             },
             { 
                 name: "Rice Bowl", 
+                description: "I promise you won't get fat if you pick this",
                 icon: `<svg viewBox="0 0 24 24"><path d="M4 12h16"/><path d="M4 12c0 4 3.6 7 8 7s8-3 8-7"/><path d="M6 12c0-2 2.7-4 6-4s6 2 6 4"/><path d="M8 9c0-1 1.8-2 4-2s4 1 4 2"/></svg>`,
                 price: 16,
                 filling: 5,
@@ -689,10 +684,26 @@
             },
             { 
                 name: "Chicken Burger", 
-                description: "Crispy chicken fillet",
+                description: "The reliable classic, just like you",
                 icon: `<svg viewBox="0 0 24 24"><path d="M4 15h16a2 2 0 002-2 2 2 0 00-2-2H4a2 2 0 00-2 2 2 2 0 002 2z"/><path d="M4 11c0-4 4-6 8-6s8 2 8 6"/><path d="M4 15c0 2 2 4 8 4s8-2 8-4"/><path d="M7 13h10"/></svg>`,
                 price: 10,
                 filling: 4,
+                isDeal: false
+            },
+            { 
+                name: "Panini", 
+                description: "Some new shit you're on",
+                icon: `<svg viewBox="0 0 24 24"><path d="M3 11h18v2H3z"/><path d="M5 8c0-1 2-3 7-3s7 2 7 3"/><path d="M5 16c0 1 2 3 7 3s7-2 7-3"/><path d="M5 11v5"/><path d="M19 11v5"/><path d="M8 11v2"/><path d="M12 11v2"/><path d="M16 11v2"/></svg>`,
+                price: 12,
+                filling: 3,
+                isDeal: false
+            },
+            { 
+                name: "Acai Bowl", 
+                description: "I know you want one to cool you down",
+                icon: `<svg viewBox="0 0 24 24"><ellipse cx="12" cy="14" rx="8" ry="5"/><path d="M4 14c0-3 3.6-5 8-5s8 2 8 5"/><circle cx="9" cy="13" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="15" cy="13" r="1"/><path d="M8 15c1 1 2.5 1.5 4 1.5s3-.5 4-1.5"/></svg>`,
+                price: 14,
+                filling: 2,
                 isDeal: false
             }
         ];
